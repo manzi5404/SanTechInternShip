@@ -6,6 +6,7 @@ import User from "./src/database/models/User.js";
 import Company from "./src/database/models/Company.js";
 import Internship from "./src/database/models/Internship.js";
 import Application from "./src/database/models/Application.js";
+import Appointment from "./src/database/models/Appointment.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
