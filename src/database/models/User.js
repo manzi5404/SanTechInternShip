@@ -43,6 +43,14 @@ const User = sequelize.define("User", {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
+  profile_image: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  status: {
+    type: DataTypes.ENUM("active", "inactive"),
+    defaultValue: "active",
+  },
 });
 
 export default User;
