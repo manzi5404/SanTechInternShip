@@ -2,10 +2,10 @@ import express from "express";
 import { Sequelize } from "sequelize";
 import sequelize from "./src/config/db.js";
 
-import User from "./src/models/User.js";
-import Company from "./src/models/Company.js";
-import Internship from "./src/models/Internship.js";
-import Application from "./src/models/Application.js";
+import User from "./src/database/models/User.js";
+import Company from "./src/database/models/Company.js";
+import Internship from "./src/database/models/Internship.js";
+import Application from "./src/database/models/Application.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
