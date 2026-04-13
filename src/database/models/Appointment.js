@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../config/db.js";
 import User from "./User.js";
+import DoctorAvailability from "./DoctorAvailability.js";
 
 const Appointment = sequelize.define("Appointment", {
   id: {
@@ -21,6 +22,14 @@ const Appointment = sequelize.define("Appointment", {
     allowNull: false,
     references: {
       model: "Users",
+      key: "id",
+    },
+  },
+  doctor_availability_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: "DoctorAvailabilities",
       key: "id",
     },
   },
@@ -109,5 +118,14 @@ Appointment.belongsTo(User, { foreignKey: "approved_by", as: "approvedBy" });
 
 User.hasMany(Appointment, { foreignKey: "cancelled_by", as: "cancelledAppointments" });
 Appointment.belongsTo(User, { foreignKey: "cancelled_by", as: "cancelledBy" });
+
+DoctorAvailability.hasMany(Appointment, {
+  foreignKey: "doctor_availability_id",
+  as: "appointments",
+});
+Appointment.belongsTo(DoctorAvailability, {
+  foreignKey: "doctor_availability_id",
+  as: "doctorAvailability",
+});
 
 export default Appointment;

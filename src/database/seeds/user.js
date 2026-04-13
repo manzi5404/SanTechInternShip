@@ -1,26 +1,41 @@
-import sequelize from "../src/config/db.js";
-import user from "../src/database/models/User.js";
-// Import your seeder function here (adjust the path to where your seeder file is)
-import { seedUsers } from "./path/to/your/seeder.js"; 
+import bcrypt from "bcrypt";
+import User from "../models/User.js";
 
-const syncDatabase = async () => {
-  try {
-    console.log("Syncing database...");
-    await sequelize.authenticate();
-    
-    // 1. Sync the tables first
-    await sequelize.sync({ alter: true });
-    console.log("Database synced successfully!");
+export const seedUsers = async () => {
+  const hashedPassword = await bcrypt.hash("password123", 10);
 
-    // 2. Call the seeder function here
-    console.log("Seeding data...");
-    await seedUsers(); 
-    
-    process.exit(0);
-  } catch (error) {
-    console.error("Error during sync/seed:", error);
-    process.exit(1);
+  const defaults = [
+    {
+      firstName: "System",
+      lastName: "Admin",
+      email: "admin@example.com",
+      role: "admin",
+      phoneNumber: "0780000001",
+    },
+    {
+      firstName: "John",
+      lastName: "Patient",
+      email: "patient@example.com",
+      role: "student",
+      phoneNumber: "0780000002",
+    },
+    {
+      firstName: "Alice",
+      lastName: "Doctor",
+      email: "doctor@example.com",
+      role: "admin",
+      phoneNumber: "0780000003",
+    },
+  ];
+
+  for (const entry of defaults) {
+    await User.findOrCreate({
+      where: { email: entry.email },
+      defaults: {
+        ...entry,
+        password: hashedPassword,
+        status: "active",
+      },
+    });
   }
-}
-
-syncDatabase();
+};
